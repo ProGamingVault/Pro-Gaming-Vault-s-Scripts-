@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skiibite Tech - Roblox Script Hub</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #252538;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 { margin-bottom: 10px; color: #00d2ff; }
+        p { color: #aaa; font-size: 14px; margin-bottom: 25px; }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .btn-yt1 { background: #555; color: #fff; }
+        .btn-yt2 { background: #777; color: #fff; }
+        .btn-sub { background: #ff4757; color: #fff; }
+        .btn-script { background: #2ed573; color: #fff; pointer-events: none; opacity: 0.5; }
+        .btn:hover { filter: brightness(1.2); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Skiibite Tech Scripts</h2>
+        <p>Complete the tasks below to unlock the Free Keyless Scripts!</p>
+        
+        <a href="YOUR_YT_VIDEO_1" target="_blank" class="btn btn-yt1" onclick="unlockStep(1)">Like Video 1</a>
+        <a href="YOUR_YT_VIDEO_2" target="_blank" class="btn btn-yt2" onclick="unlockStep(2)">Like Video 2</a>
+        <a href="YOUR_CHANNEL_SUBSCRIBE_LINK" target="_blank" class="btn btn-sub" onclick="unlockStep(3)">Subscribe Channel</a>
+        
+        <a href="YOUR_LINKVERTISE_BLOGGER_URL" id="scriptBtn" class="btn btn-script">Explore Roblox Scripts</a>
+    </div>
+
+    <script>
+        let completedSteps = 0;
+        let unlocked = {1: false, 2: false, 3: false};
+
+        function unlockStep(step) {
+            if(!unlocked[step]) {
+                unlocked[step] = true;
+                completedSteps++;
+            }
+            if(completedSteps === 3) {
+                let btn = document.getElementById('scriptBtn');
+                btn.style.pointerEvents = 'auto';
+                btn.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>
