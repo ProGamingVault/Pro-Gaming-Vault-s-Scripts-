@@ -146,7 +146,7 @@
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
-            background: #000;
+            background: #111;
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 10px;
@@ -156,7 +156,7 @@
         }
         .video-container img {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.75;
+            top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.85;
         }
         .play-btn-overlay {
             position: absolute;
@@ -246,8 +246,8 @@
         </div>
     </div>
 
-    <!-- Task 1: YouTube Subscribe (Completed State) -->
-    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="task-card completed" id="task1" onclick="startSubTask(event)" style="border-color: #00e676;">
+    <!-- Task 1: YouTube Subscribe -->
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="task-card completed" id="task1" style="border-color: #00e676;">
         <div class="task-info">
             <div class="task-icon" style="color: #ff4d4d;">▶</div>
             <div>
@@ -258,12 +258,12 @@
         <div class="action-arrow" style="background: #2d3748; color: #00e676;">✓</div>
     </a>
 
-    <!-- Task 2: YouTube Thumbnail & Watch Video (Now Unlocked with Real Thumbnail) -->
+    <!-- Task 2: YouTube Thumbnail & Watch Video with Correct Link -->
     <div class="video-box" id="task2Box">
         <div class="video-container">
-            <!-- Real Thumbnail Loaded via Video ID -->
-            <img src="https://img.youtube.com/vi/4xpWcesuK0KKJ3kp/hqdefault.jpg" alt="Video Thumbnail">
-            <a href="https://youtu.com/4xpWcesuK0KKJ3kp" target="_blank" class="play-btn-overlay">▶ Watch on YouTube</a>
+            <!-- Correct Video ID Thumbnail -->
+            <img src="https://img.youtube.com/vi/4xpWcesuK0KKJ3kp/hqdefault.jpg" alt="Thumbnail" onerror="this.src='https://img.youtube.com/vi/4xpWcesuK0KKJ3kp/sddefault.jpg'">
+            <a href="https://www.youtube.com/watch?v=4xpWcesuK0KKJ3kp" target="_blank" class="play-btn-overlay">▶ Watch on YouTube</a>
         </div>
         <div class="video-footer">
             <span id="videoStatus" style="color: #8a99ad; font-size: 11px;">Click timer to start 30s watch</span>
@@ -278,7 +278,6 @@
 </div>
 
 <script>
-    // Since task 1 was already verified in your test, we set it true by default so you can test task 2 easily
     let task1Done = true; 
     let task2Done = false;
 
