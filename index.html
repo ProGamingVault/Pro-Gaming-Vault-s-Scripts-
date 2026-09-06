@@ -3,58 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Gaming Vault - Roblox Script Hub</title>
+    <title>Pro Gaming Vault Scripts - Unlock</title>
     <style>
         body {
+            background-color: #121824;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            margin: 0;
+            color: #ffffff;
         }
-        .container {
-            background: #252538;
+        .locker-card {
+            background-color: #1e2532;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 400px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            width: 400px;
             text-align: center;
         }
-        h2 { margin-bottom: 5px; color: #00d2ff; }
-        p { color: #aaa; font-size: 14px; margin-bottom: 20px; }
-        
-        /* Progress Bar Styles */
-        .progress-container {
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .progress-text {
-            font-size: 13px;
-            color: #bbb;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        .progress-bar-bg {
-            background: #33334d;
-            border-radius: 10px;
-            height: 10px;
+        h2 { color: #00d2ff; margin-bottom: 5px; }
+        p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+        .progress-bar {
+            background: #2d3748;
+            border-radius: 8px;
+            height: 8px;
             width: 100%;
+            margin-bottom: 20px;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
-        .progress-bar-fill {
-            background: linear-gradient(90deg, #ff9800, #ff5722);
+        .progress {
+            background: #00d2ff;
             height: 100%;
             width: 0%;
-            transition: width 0.4s ease-in-out;
-            border-radius: 10px;
+            transition: width 0.4s ease;
         }
-
         .btn {
             display: block;
             width: 100%;
@@ -62,65 +46,68 @@
             margin: 10px 0;
             border: none;
             border-radius: 6px;
-            font-size: 15px;
             font-weight: bold;
+            font-size: 15px;
             cursor: pointer;
             text-decoration: none;
-            transition: 0.3s;
+            transition: opacity 0.3s;
         }
-        .btn-yt { background: #555; color: #fff; }
-        .btn-sub { background: #ff4757; color: #fff; }
-        .btn-script { background: #2ed573; color: #fff; pointer-events: none; opacity: 0.5; }
-        .btn:hover { filter: brightness(1.2); }
+        .btn-like { background-color: #4a5568; color: white; }
+        .btn-sub { background-color: #e53e3e; color: white; }
+        .btn-discord { background-color: #2f855a; color: white; pointer-events: none; opacity: 0.5; }
+        .btn-discord.active { pointer-events: auto; opacity: 1; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Pro Gaming Vault Scripts</h2>
-        <p>Complete the tasks below to access the community & scripts!</p>
-        
-        <div class="progress-container">
-            <div class="progress-text" id="progressText">Steps completed: 0 / 2 (0%)</div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-        </div>
-        
-        <a href="https://youtu.be/vg-ZKbcjOW8?si=50251XC09B3kXaja" target="_blank" class="btn btn-yt" onclick="unlockStep(1)">Like Video</a>
-        
-        <a href="https://www.youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" onclick="unlockStep(2)">Subscribe Channel</a>
-        
-        <a href="https://discord.gg/g73GzpTJQj" id="scriptBtn" class="btn btn-script" target="_blank">Join Discord & Get Scripts</a>
+<div class="locker-card">
+    <h2>Pro Gaming Vault Scripts</h2>
+    <p>Complete the tasks below to access the community & scripts!</p>
+    
+    <div class="progress-bar">
+        <div class="progress" id="progressBar"></div>
     </div>
+    <div id="statusText" style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">Steps completed: 0 / 2 (0%)</div>
 
-    <script>
-        let completedSteps = 0;
-        let unlocked = {1: false, 2: false};
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-like" id="likeBtn" onclick="taskClicked('like')">Like Video</a>
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="taskClicked('sub')">Subscribe Channel</a>
+    <a href="https://discord.com/invite/g73GzpTJQj" target="_blank" class="btn btn-discord" id="discordBtn">Join Discord & Get Scripts</a>
+</div>
 
-        function unlockStep(step) {
-            if(!unlocked[step]) {
-                unlocked[step] = true;
-                completedSteps++;
-                updateProgress();
-            }
-            if(completedSteps === 2) {
-                let btn = document.getElementById('scriptBtn');
-                btn.style.pointerEvents = 'auto';
-                btn.style.opacity = '1';
-                btn.style.background = '#2ed573';
-            }
-        }
+<script>
+    let tasks = { like: false, sub: false };
 
-        function updateProgress() {
-            let percentage = (completedSteps / 2) * 100;
-            document.getElementById('progressBar').style.width = percentage + '%';
-            document.getElementById('progressText').innerText = `Steps completed: ${completedSteps} / 2 (${percentage}%)`;
+    function taskClicked(taskName) {
+        // Mark task as clicked and start checking when user returns to tab
+        setTimeout(() => {
+            tasks[taskName] = true;
+            updateProgress();
+        }, 1500); // 1.5 seconds delay to simulate verification
+    }
+
+    function updateProgress() {
+        let completed = 0;
+        if (tasks.like) completed++;
+        if (tasks.sub) completed++;
+
+        let percentage = (completed / 2) * 100;
+        document.getElementById('progressBar').style.width = percentage + '%';
+        document.getElementById('statusText').innerText = `Steps completed: ${completed} / 2 (${percentage}%)`;
+
+        if (completed === 2) {
+            let discordBtn = document.getElementById('discordBtn');
+            discordBtn.classList.add('active');
+            discordBtn.innerText = "🎉 Unlock Successful! Join Discord";
         }
-    </script>
-</body>
-</html>
+    }
+
+    // Window focus listener: Jab user YouTube se wapas is tab par aayega toh yeh check mazeed strong ho jayega
+    window.addEventListener('focus', function() {
+        if (tasks.sub && tasks.like) {
+            updateProgress();
         }
-    </script>
+    });
+</script>
+
 </body>
 </html>
