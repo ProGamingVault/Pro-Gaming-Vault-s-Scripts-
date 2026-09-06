@@ -3,126 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Gaming Vault Scripts - Secure Unlock</title>
+    <title>Pro Gaming Vault - Secure Script Locker</title>
     <style>
         body {
-            background-color: #121824;
+            background-color: #0b1118;
+            background-image: radial-gradient(circle at center, #132235 0%, #0b1118 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             color: #ffffff;
         }
         .locker-card {
-            background-color: #1e2532;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            width: 400px;
+            background-color: #121a24;
+            border: 1px solid #1f2c3d;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.7);
+            width: 440px;
             text-align: center;
         }
-        h2 { color: #00d2ff; margin-bottom: 5px; }
-        p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
-        .progress-bar {
-            background: #2d3748;
-            border-radius: 8px;
-            height: 8px;
-            width: 100%;
-            margin-bottom: 20px;
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #1f2c3d;
+            margin: 0 auto 12px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #00d2ff;
             overflow: hidden;
+            font-size: 24px;
+            color: #00d2ff;
         }
-        .progress {
-            background: #00d2ff;
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        h2 { color: #ffffff; margin: 0 0 5px 0; font-size: 20px; }
+        p { color: #8a99ad; font-size: 12px; margin-bottom: 20px; }
+        
+        .progress-container {
+            text-align: left;
+            margin-bottom: 20px;
         }
-        .btn {
-            display: block;
-            width: 100%;
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #8a99ad;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .progress-bars {
+            display: flex;
+            gap: 6px;
+        }
+        .bar-segment {
+            flex: 1;
+            height: 6px;
+            background: #1f2c3d;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        .bar-segment.active {
+            background: #00e676;
+            box-shadow: 0 0 10px rgba(0,230,118,0.4);
+        }
+
+        .task-card {
+            background: #17212d;
+            border: 1px solid #233347;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: white;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .task-card:hover {
+            border-color: #314660;
+            background: #1b2736;
+        }
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+        }
+        .task-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: #233347;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+        .task-title { font-size: 13px; font-weight: 600; color: #e2e8f0; }
+        .task-desc { font-size: 11px; color: #718096; }
+        .action-arrow {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #00e676;
+            color: #0b1118;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .task-card.completed .action-arrow {
+            background: #2d3748;
+            color: #00e676;
+        }
+
+        /* Embedded Video Section */
+        .video-box {
+            background: #17212d;
+            border: 1px solid #233347;
+            border-radius: 10px;
             padding: 12px;
-            margin: 10px 0;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #000;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+        .video-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+        .watch-btn {
+            background: #ff4d4d;
+            color: white;
             border: none;
+            padding: 6px 12px;
             border-radius: 6px;
             font-weight: bold;
-            font-size: 15px;
             cursor: pointer;
+            font-size: 11px;
+            transition: 0.2s;
+        }
+        .watch-btn:disabled {
+            background: #2d3748;
+            color: #718096;
+            cursor: not-allowed;
+        }
+
+        .btn-unlock {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: #233347;
+            color: #718096;
+            cursor: not-allowed;
             text-decoration: none;
             transition: all 0.3s;
         }
-        .btn-like { background-color: #4a5568; color: white; }
-        .btn-sub { background-color: #e53e3e; color: white; }
-        .btn-discord { background-color: #2f855a; color: white; pointer-events: none; opacity: 0.4; }
-        .btn-discord.active { pointer-events: auto; opacity: 1; cursor: pointer; }
+        .btn-unlock.active {
+            background-color: #00e676;
+            color: #0b1118;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,230,118,0.4);
+        }
+        .footer-text {
+            margin-top: 15px;
+            font-size: 10px;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
 
 <div class="locker-card">
-    <h2>Pro Gaming Vault Scripts</h2>
-    <p>Complete both steps to unlock your script & Discord!</p>
-    
-    <div class="progress-bar">
-        <div class="progress" id="progressBar"></div>
+    <div class="avatar">
+        ⚡
     </div>
-    <div id="statusText" style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">Steps completed: 0 / 2 (0%)</div>
+    <h2>Content Locked</h2>
+    <p>Complete the 2 steps below to unlock your scripts</p>
+    
+    <div class="progress-container">
+        <div class="progress-header">
+            <span>YOUR PROGRESS</span>
+            <span id="progressCount">0/2</span>
+        </div>
+        <div class="progress-bars">
+            <div class="bar-segment" id="seg1"></div>
+            <div class="bar-segment" id="seg2"></div>
+        </div>
+    </div>
 
-    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-like" id="likeBtn" onclick="startVerification('like')">1. Like Video on YouTube</a>
-    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="startVerification('sub')">2. Subscribe to Channel</a>
-    <a href="https://discord.com/invite/g73GzpTJQj" target="_blank" class="btn btn-discord" id="discordBtn">Join Discord & Get Scripts</a>
+    <!-- Task 1: YouTube Subscribe with 10s Timer Validation -->
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="task-card" id="task1" onclick="startSubTask(event)">
+        <div class="task-info">
+            <div class="task-icon" style="color: #ff4d4d;">▶</div>
+            <div>
+                <div class="task-title">Subscribe to Channel</div>
+                <div class="task-desc">Spend at least 10 seconds</div>
+            </div>
+        </div>
+        <div class="action-arrow">→</div>
+    </a>
+
+    <!-- Task 2: Watch Video with 30s Live Countdown -->
+    <div class="video-box" id="task2Box">
+        <div class="video-container">
+            <!-- Yahan apni YouTube video ki ID daal dein (embed link) -->
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
+        </div>
+        <div class="video-footer">
+            <span id="videoStatus" style="color: #8a99ad; font-size: 11px;">Watch Video: Click to start timer</span>
+            <button class="watch-btn" id="watchBtn" onclick="startVideoTimer()">Start Watching</button>
+        </div>
+    </div>
+
+    <!-- Final Unlock Button -->
+    <a href="https://discord.com/invite/g73GzpTJQj" target="_blank" class="btn-unlock" id="unlockBtn">Complete all steps to unlock</a>
+
+    <div class="footer-text">Powered by Pro Gaming Vault</div>
 </div>
 
 <script>
-    let verified = { like: false, sub: false };
-    let activeTask = null;
-    let startTime = 0;
+    let task1Done = false;
+    let task2Done = false;
+    let subStartTime = 0;
+    let isSubPending = false;
 
-    function startVerification(taskName) {
-        activeTask = taskName;
-        startTime = Date.now();
+    // Task 1 Logic
+    function startSubTask(event) {
+        if (task1Done) return;
+        subStartTime = Date.now();
+        isSubPending = true;
     }
 
-    // Jab user YouTube tab se wapas is page par aayega
     window.addEventListener('focus', function() {
-        if (!activeTask) return;
+        if (!isSubPending) return;
 
-        let elapsedTime = Date.now() - startTime;
-        
-        // Agar user 10 seconds se pehle wapas aa gaya, toh task reject ho jayega
-        if (elapsedTime < 10000) {
-            alert("⚠️ Please spend at least 10 seconds on YouTube to complete the task!");
-            activeTask = null;
+        let timeSpent = Date.now() - subStartTime;
+
+        if (timeSpent < 9000) {
+            alert("⚠️ Warning: Please complete the subscription task and spend at least 10 seconds on the YouTube page before returning!");
+            isSubPending = false;
             return;
         }
 
-        // Agar 10 seconds poore ho gaye toh task verify ho jayega
-        if (activeTask === 'like' || activeTask === 'sub') {
-            verified[activeTask] = true;
-            let btnId = activeTask === 'like' ? 'likeBtn' : 'subBtn';
-            let btn = document.getElementById(btnId);
-            btn.style.backgroundColor = "#2b6cb0";
-            btn.innerText = "✔ Completed";
-        }
-
-        activeTask = null;
+        task1Done = true;
+        isSubPending = false;
+        
+        let card = document.getElementById('task1');
+        card.classList.add('completed');
+        card.style.borderColor = '#00e676';
+        card.querySelector('.action-arrow').innerHTML = '✓';
+        document.getElementById('seg1').classList.add('active');
+        
         updateProgress();
     });
 
+    // Task 2 Logic (30 Seconds Watch Timer)
+    function startVideoTimer() {
+        if (task2Done) return;
+        
+        let btn = document.getElementById('watchBtn');
+        let status = document.getElementById('videoStatus');
+        btn.disabled = true;
+        
+        let timeLeft = 30;
+        status.style.color = "#00d2ff";
+        
+        let countdown = setInterval(function() {
+            timeLeft--;
+            status.innerText = `Keep watching... ${timeLeft}s left`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                task2Done = true;
+                status.style.color = "#00e676";
+                status.innerText = "✔ Watch completed!";
+                document.getElementById('task2Box').style.borderColor = '#00e676';
+                document.getElementById('seg2').classList.add('active');
+                updateProgress();
+            }
+        }, 1000);
+    }
+
     function updateProgress() {
-        let completed = 0;
-        if (verified.like) completed++;
-        if (verified.sub) completed++;
+        let count = (task1Done ? 1 : 0) + (task2Done ? 1 : 0);
+        document.getElementById('progressCount').innerText = count + '/2';
 
-        let percentage = (completed / 2) * 100;
-        document.getElementById('progressBar').style.width = percentage + '%';
-        document.getElementById('statusText').innerText = `Steps completed: ${completed} / 2 (${percentage}%)`;
-
-        if (completed === 2) {
-            let discordBtn = document.getElementById('discordBtn');
-            discordBtn.classList.add('active');
-            discordBtn.innerText = "🎉 Unlocked! Join Discord Now";
+        if (count === 2) {
+            let unlockBtn = document.getElementById('unlockBtn');
+            unlockBtn.classList.add('active');
+            unlockBtn.innerText = "🎉 Unlocked! Join Discord & Get Scripts";
         }
     }
 </script>
