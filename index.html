@@ -90,14 +90,14 @@
 
         let elapsedTime = Date.now() - startTime;
         
-        // Agar user 6 seconds se pehle wapas aa gaya, toh iska matlab usne task nahi kiya/dekha nahi
-        if (elapsedTime < 6000) {
-            alert("⚠️ Please complete the action on YouTube fully before returning!");
+        // Agar user 10 seconds se pehle wapas aa gaya, toh task reject ho jayega
+        if (elapsedTime < 10000) {
+            alert("⚠️ Please spend at least 10 seconds on YouTube to complete the task!");
             activeTask = null;
             return;
         }
 
-        // Agar waqt poora ho gaya toh task true kar do
+        // Agar 10 seconds poore ho gaye toh task verify ho jayega
         if (activeTask === 'like' || activeTask === 'sub') {
             verified[activeTask] = true;
             let btnId = activeTask === 'like' ? 'likeBtn' : 'subBtn';
