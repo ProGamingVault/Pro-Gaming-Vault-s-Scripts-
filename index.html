@@ -124,7 +124,15 @@
             color: #00e676;
         }
 
-        /* Embedded Video Section */
+        /* Locked State styling for Task 2 */
+        .locked-task {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(1);
+            transition: all 0.4s ease;
+        }
+
+        /* YouTube Thumbnail & Watch Box */
         .video-box {
             background: #17212d;
             border: 1px solid #233347;
@@ -132,6 +140,7 @@
             padding: 12px;
             margin-bottom: 12px;
             text-align: left;
+            transition: all 0.4s ease;
         }
         .video-container {
             position: relative;
@@ -141,10 +150,25 @@
             border-radius: 6px;
             overflow: hidden;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .video-container iframe {
+        .video-container img {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%; border: none;
+            top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.6;
+        }
+        .play-btn-overlay {
+            position: absolute;
+            z-index: 2;
+            background: #ff0000;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
         .video-footer {
             display: flex;
@@ -153,8 +177,8 @@
             font-size: 12px;
         }
         .watch-btn {
-            background: #ff4d4d;
-            color: white;
+            background: #00d2ff;
+            color: #0b1118;
             border: none;
             padding: 6px 12px;
             border-radius: 6px;
@@ -206,7 +230,7 @@
         ⚡
     </div>
     <h2>Content Locked</h2>
-    <p>Complete the 2 steps below to unlock your scripts</p>
+    <p>Complete the steps sequentially to unlock your scripts</p>
     
     <div class="progress-container">
         <div class="progress-header">
@@ -219,27 +243,27 @@
         </div>
     </div>
 
-    <!-- Task 1: YouTube Subscribe with 10s Timer Validation -->
+    <!-- Task 1: YouTube Subscribe (Always Open First) -->
     <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="task-card" id="task1" onclick="startSubTask(event)">
         <div class="task-info">
             <div class="task-icon" style="color: #ff4d4d;">▶</div>
             <div>
-                <div class="task-title">Subscribe to Channel</div>
+                <div class="task-title">1. Subscribe to Channel</div>
                 <div class="task-desc">Spend at least 10 seconds</div>
             </div>
         </div>
         <div class="action-arrow">→</div>
     </a>
 
-    <!-- Task 2: Watch Video with 30s Live Countdown -->
-    <div class="video-box" id="task2Box">
+    <!-- Task 2: YouTube Thumbnail & Watch Video (Initially Locked) -->
+    <div class="video-box locked-task" id="task2Box">
         <div class="video-container">
-            <!-- Yahan apni YouTube video ki ID daal dein (embed link) -->
-            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
+            <img src="https://img.youtube.com/vi/YOUR_VIDEO_ID/hqdefault.jpg" alt="Video Thumbnail">
+            <a href="https://youtu.com/YOUR_VIDEO_ID" target="_blank" class="play-btn-overlay">▶ Watch on YouTube</a>
         </div>
         <div class="video-footer">
-            <span id="videoStatus" style="color: #8a99ad; font-size: 11px;">Watch Video: Click to start timer</span>
-            <button class="watch-btn" id="watchBtn" onclick="startVideoTimer()">Start Watching</button>
+            <span id="videoStatus" style="color: #8a99ad; font-size: 11px;">Complete Task 1 to unlock video timer</span>
+            <button class="watch-btn" id="watchBtn" onclick="startVideoTimer()" disabled>Start 30s Timer</button>
         </div>
     </div>
 
@@ -282,12 +306,18 @@
         card.querySelector('.action-arrow').innerHTML = '✓';
         document.getElementById('seg1').classList.add('active');
         
+        // UNLOCK TASK 2
+        let task2Box = document.getElementById('task2Box');
+        task2Box.classList.remove('locked-task');
+        document.getElementById('watchBtn').disabled = false;
+        document.getElementById('videoStatus').innerText = "Click timer to start 30s watch";
+
         updateProgress();
     });
 
     // Task 2 Logic (30 Seconds Watch Timer)
     function startVideoTimer() {
-        if (task2Done) return;
+        if (task2Done || !task1Done) return;
         
         let btn = document.getElementById('watchBtn');
         let status = document.getElementById('videoStatus');
