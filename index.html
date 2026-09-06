@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Gaming Vault Scripts - Unlock</title>
+    <title>Pro Gaming Vault Scripts - Secure Unlock</title>
     <style>
         body {
             background-color: #121824;
@@ -50,11 +50,11 @@
             font-size: 15px;
             cursor: pointer;
             text-decoration: none;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
         }
         .btn-like { background-color: #4a5568; color: white; }
         .btn-sub { background-color: #e53e3e; color: white; }
-        .btn-discord { background-color: #2f855a; color: white; pointer-events: none; opacity: 0.5; }
+        .btn-discord { background-color: #2f855a; color: white; pointer-events: none; opacity: 0.4; }
         .btn-discord.active { pointer-events: auto; opacity: 1; cursor: pointer; }
     </style>
 </head>
@@ -62,33 +62,58 @@
 
 <div class="locker-card">
     <h2>Pro Gaming Vault Scripts</h2>
-    <p>Complete the tasks below to access the community & scripts!</p>
+    <p>Complete both steps to unlock your script & Discord!</p>
     
     <div class="progress-bar">
         <div class="progress" id="progressBar"></div>
     </div>
     <div id="statusText" style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">Steps completed: 0 / 2 (0%)</div>
 
-    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-like" id="likeBtn" onclick="taskClicked('like')">Like Video</a>
-    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="taskClicked('sub')">Subscribe Channel</a>
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-like" id="likeBtn" onclick="startVerification('like')">1. Like Video on YouTube</a>
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="startVerification('sub')">2. Subscribe to Channel</a>
     <a href="https://discord.com/invite/g73GzpTJQj" target="_blank" class="btn btn-discord" id="discordBtn">Join Discord & Get Scripts</a>
 </div>
 
 <script>
-    let tasks = { like: false, sub: false };
+    let verified = { like: false, sub: false };
+    let activeTask = null;
+    let startTime = 0;
 
-    function taskClicked(taskName) {
-        // Mark task as clicked and start checking when user returns to tab
-        setTimeout(() => {
-            tasks[taskName] = true;
-            updateProgress();
-        }, 1500); // 1.5 seconds delay to simulate verification
+    function startVerification(taskName) {
+        activeTask = taskName;
+        startTime = Date.now();
     }
+
+    // Jab user YouTube tab se wapas is page par aayega
+    window.addEventListener('focus', function() {
+        if (!activeTask) return;
+
+        let elapsedTime = Date.now() - startTime;
+        
+        // Agar user 6 seconds se pehle wapas aa gaya, toh iska matlab usne task nahi kiya/dekha nahi
+        if (elapsedTime < 6000) {
+            alert("⚠️ Please complete the action on YouTube fully before returning!");
+            activeTask = null;
+            return;
+        }
+
+        // Agar waqt poora ho gaya toh task true kar do
+        if (activeTask === 'like' || activeTask === 'sub') {
+            verified[activeTask] = true;
+            let btnId = activeTask === 'like' ? 'likeBtn' : 'subBtn';
+            let btn = document.getElementById(btnId);
+            btn.style.backgroundColor = "#2b6cb0";
+            btn.innerText = "✔ Completed";
+        }
+
+        activeTask = null;
+        updateProgress();
+    });
 
     function updateProgress() {
         let completed = 0;
-        if (tasks.like) completed++;
-        if (tasks.sub) completed++;
+        if (verified.like) completed++;
+        if (verified.sub) completed++;
 
         let percentage = (completed / 2) * 100;
         document.getElementById('progressBar').style.width = percentage + '%';
@@ -97,16 +122,9 @@
         if (completed === 2) {
             let discordBtn = document.getElementById('discordBtn');
             discordBtn.classList.add('active');
-            discordBtn.innerText = "🎉 Unlock Successful! Join Discord";
+            discordBtn.innerText = "🎉 Unlocked! Join Discord Now";
         }
     }
-
-    // Window focus listener: Jab user YouTube se wapas is tab par aayega toh yeh check mazeed strong ho jayega
-    window.addEventListener('focus', function() {
-        if (tasks.sub && tasks.like) {
-            updateProgress();
-        }
-    });
 </script>
 
 </body>
