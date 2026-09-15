@@ -83,31 +83,19 @@
 <script>
     let verified = { sub: false, like: false };
     let activeTask = null;
-    let startTime = 0;
 
     function startVerification(taskName) {
-        // Agar task 2 par click kare aur task 1 complete na ho toh rok dein
         if (taskName === 'like' && !verified.sub) {
             return;
         }
         activeTask = taskName;
-        startTime = Date.now();
     }
 
     // Jab user YouTube tab se wapas is page par aayega
     window.addEventListener('focus', function() {
         if (!activeTask) return;
 
-        let elapsedTime = Date.now() - startTime;
-        
-        // Agar user 10 seconds se pehle wapas aa gaya, toh task reject ho jayega
-        if (elapsedTime < 10000) {
-            alert("⚠️ Please spend at least 10 seconds on YouTube to complete the task!");
-            activeTask = null;
-            return;
-        }
-
-        // Agar 10 seconds poore ho gaye toh task verify ho jayega
+        // Time check aur alert ko yahan se hata diya gaya hai taake task foran verify ho jaye
         if (activeTask === 'sub' || activeTask === 'like') {
             verified[activeTask] = true;
             let btnId = activeTask === 'sub' ? 'subBtn' : 'likeBtn';
@@ -115,7 +103,6 @@
             btn.style.backgroundColor = "#2b6cb0";
             btn.innerText = "✔ Completed";
 
-            // Agar Subscribe complete ho gaya, toh Like wale button ko unlock kar do
             if (activeTask === 'sub') {
                 let likeBtn = document.getElementById('likeBtn');
                 likeBtn.classList.add('active-task');
