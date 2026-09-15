@@ -70,8 +70,8 @@
     </div>
     <div id="statusText" style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">Steps completed: 0 / 2 (0%)</div>
 
-    <!-- 1st Task: Subscribe (Always Active first) -->
-    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="startVerification('sub')">1. Subscribe to Channel</a>
+    <!-- 1st Task: Subscribe & Bell Icon (Always Active first) -->
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="startVerification('sub')">1. Subscribe & Set Bell Icon (All)</a>
     
     <!-- 2nd Task: Like (Locked initially until Sub is completed) -->
     <a href="https://youtube.com/shorts/TWlLV7sK7No" target="_blank" class="btn btn-like" id="likeBtn" onclick="startVerification('like')">2. Like Video on YouTube</a>
@@ -95,7 +95,6 @@
     window.addEventListener('focus', function() {
         if (!activeTask) return;
 
-        // Time check aur alert ko yahan se hata diya gaya hai taake task foran verify ho jaye
         if (activeTask === 'sub' || activeTask === 'like') {
             verified[activeTask] = true;
             let btnId = activeTask === 'sub' ? 'subBtn' : 'likeBtn';
