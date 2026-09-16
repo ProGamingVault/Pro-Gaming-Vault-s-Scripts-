@@ -130,4 +130,136 @@
 </script>
 
 </body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Gaming Vault Scripts - Secure Unlock</title>
+    <style>
+        body {
+            background-color: #121824;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #ffffff;
+        }
+        .locker-card {
+            background-color: #1e2532;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            width: 400px;
+            text-align: center;
+        }
+        h2 { color: #00d2ff; margin-bottom: 5px; }
+        p { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+        .progress-bar {
+            background: #2d3748;
+            border-radius: 8px;
+            height: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress {
+            background: #00d2ff;
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-sub { background-color: #e53e3e; color: white; }
+        .btn-like { background-color: #4a5568; color: white; pointer-events: none; opacity: 0.4; }
+        .btn-like.active-task { pointer-events: auto; opacity: 1; cursor: pointer; }
+        .btn-discord { background-color: #2f855a; color: white; pointer-events: none; opacity: 0.4; }
+        .btn-discord.active { pointer-events: auto; opacity: 1; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="locker-card">
+    <h2>Pro Gaming Vault Scripts</h2>
+    <p>Complete both steps sequentially to unlock your script & Discord!</p>
+    
+    <div class="progress-bar">
+        <div class="progress" id="progressBar"></div>
+    </div>
+    <div id="statusText" style="font-size: 12px; color: #a0aec0; margin-bottom: 15px;">Steps completed: 0 / 2 (0%)</div>
+
+    <!-- 1st Task: Subscribe & Bell Icon (Always Active first) -->
+    <a href="https://youtube.com/@ProGamingVault-e2k?sub_confirmation=1" target="_blank" class="btn btn-sub" id="subBtn" onclick="startVerification('sub')">1. Subscribe & Set Bell Icon (All)</a>
+    
+    <!-- 2nd Task: Like (Locked initially until Sub is completed) -->
+    <a href="https://youtu.be/VMjMckT4TLg" target="_blank" class="btn btn-like" id="likeBtn" onclick="startVerification('like')">2. Like Video on YouTube</a>
+    
+    <!-- Final Discord Button -->
+    <a href="https://discord.gg/UqUSuZtaYR" target="_blank" class="btn btn-discord" id="discordBtn">Join Discord & Get Scripts</a>
+</div>
+
+<script>
+    let verified = { sub: false, like: false };
+    let activeTask = null;
+
+    function startVerification(taskName) {
+        if (taskName === 'like' && !verified.sub) {
+            return;
+        }
+        activeTask = taskName;
+    }
+
+    // Jab user YouTube tab se wapas is page par aayega
+    window.addEventListener('focus', function() {
+        if (!activeTask) return;
+
+        if (activeTask === 'sub' || activeTask === 'like') {
+            verified[activeTask] = true;
+            let btnId = activeTask === 'sub' ? 'subBtn' : 'likeBtn';
+            let btn = document.getElementById(btnId);
+            btn.style.backgroundColor = "#2b6cb0";
+            btn.innerText = "✔ Completed";
+
+            if (activeTask === 'sub') {
+                let likeBtn = document.getElementById('likeBtn');
+                likeBtn.classList.add('active-task');
+            }
+        }
+
+        activeTask = null;
+        updateProgress();
+    });
+
+    function updateProgress() {
+        let completed = 0;
+        if (verified.sub) completed++;
+        if (verified.like) completed++;
+
+        let percentage = (completed / 2) * 100;
+        document.getElementById('progressBar').style.width = percentage + '%';
+        document.getElementById('statusText').innerText = `Steps completed: ${completed} / 2 (${percentage}%)`;
+
+        if (completed === 2) {
+            let discordBtn = document.getElementById('discordBtn');
+            discordBtn.classList.add('active');
+            discordBtn.innerText = "🎉 Unlocked! Join Discord Now";
+        }
+    }
+</script>
+
+</body>
 </html>
